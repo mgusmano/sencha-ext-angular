@@ -1,12 +1,22 @@
 {
-  "name": "ext-angular",
-  "version": "1.0.0",
-  "description": "",
+  "name": "@sencha/ext-angular",
+  "version": "0.0.1",
+  "description": "Sencha ExtAngular",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mgusmano/ext-angular.git"
+  },
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "Marc Gusmano <mgusmano@yahoo.com> (http://MarcGusmano.com)",
-  "license": "ISC"
+  "author": "Sencha",
+  "license": "MIT",
+  "dependencies": {
+    "@angular/core": "^4.0.0-rc.5",
+    "rxjs": "^5.2.0",
+    "zone.js": "^0.8.5"
+  },
+  "devDependencies": {
+    "typescript": "^2.2.1"
+  }
 }
