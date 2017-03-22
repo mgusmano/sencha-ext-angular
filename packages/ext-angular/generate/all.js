@@ -7,7 +7,7 @@ function launch(data) {
 	var commaOrBlank = "";
 	var prefix = "x";
 	var dist = "app/";
-	var root = "src/";
+	var root = "../src/";
 	var folder = root + dist;
 	var tab = "\t";
 	var newLine = "\n";
