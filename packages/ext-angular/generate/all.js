@@ -1,6 +1,46 @@
 var fs = require('fs');
-var data = require('./modern-all-classes-flatten.json');  
+var data = require('./modern-all-classes-flatten.json'); 
+var folders = require('./folders');
+
+//process.stdout.write('\x1B[2J\x1B[0f');
+
+folders.rmdir("../dist");
+console.log('rmdir: ' + "../dist")
+folders.rmdir("../src");
+console.log('rmdir: ' + "../src")
+
+folders.mkdir("../src");
+console.log('mkdir: ' + "../src")
+folders.mkdir("../src/app");
+console.log('mkdir: ' + "../src/app")
+console.log('')
+
 launch(data);
+console.log('')
+
+var execSync = require('child_process').execSync;
+var cmd = 'tsc';
+
+console.log('exec: tsc')
+execSync(cmd, function(error, stdout, stderr) {});
+
+
+folders.mkdir("../dist/demo/");
+console.log('mkdir: ' + "../dist/demo/")
+console.log('exec: cp -r ./demo ../dist/')
+execSync("cp -r ./demo ../dist/", function(error, stdout, stderr) {
+	if(error !== null) {
+		console.log("exec error: " + error);
+	}
+});
+
+console.log('cp ../../../README.md ../dist/')
+execSync("cp ../../../README.md ../dist/", function(error, stdout, stderr) {});
+
+console.log('cp ../package.json ../dist/')
+execSync("cp ../package.json ../dist/", function(error, stdout, stderr) {});
+
+
 
 function launch(data) {
 	var items = data.global.items;
@@ -84,6 +124,7 @@ function launch(data) {
 				sOUTPUTNAMES = sOUTPUTNAMES + tab + tab + "'" + "ready" + "'" + "" + newLine;
 				var className =  o.xtype.replace(/-/g, "_")
 				allClasses = allClasses + tab + "'" + o.name + "'," + tab + "// xtype='" + className + "'" + newLine;
+				console.log('creating: ' + folder + prefix + '.' + className + '.ts')
 				fs.writeFile(folder + prefix + '.' + className + '.ts', doClass(o.xtype, sINPUTS, sOUTPUTS, sOUTPUTNAMES, prefix, o.name, className), 
 					function(err) {if(err) { return console.log(err); }
 				});
@@ -95,15 +136,20 @@ function launch(data) {
 		}
 	}
 
+	console.log('')
+	console.log('creating: ' + folder + prefix + '.' + 'base' + '.ts')
 	fs.writeFile(folder + prefix + '.' + 'base' + '.ts', doExtBase(prefix), 
 		function(err) {if(err){return console.log(err);}
 	});
+	console.log('creating: ' + folder + prefix + '.' + 'class' + '.ts')
 	fs.writeFile(folder + prefix + '.' + 'class' + '.ts', doExtClass(prefix), 
 		function(err) {if(err){return console.log(err);}
 	});
+	console.log('creating: ' + folder + prefix + '.ts')
 	fs.writeFile(folder + prefix + '.ts', doExt(prefix), 
 		function(err) {if(err){return console.log(err);}
 	});
+	console.log('creating: ' + folder + prefix + '.' + 'ngcomponent' + '.ts')
 	fs.writeFile(folder + prefix + '.' + 'ngcomponent' + '.ts', doExtNgComponent(prefix), 
 		function(err) {if(err){return console.log(err);}
 	});
@@ -115,6 +161,7 @@ function launch(data) {
 	});
 	exports = exports.substring(0, exports.length - 2); exports = exports + newLine;
 	declarations = declarations.substring(0, declarations.length - 2); declarations = declarations + newLine;
+	console.log('creating: ' + folder + prefix + '.' + 'module' + '.ts')
 	fs.writeFile(folder + prefix + '.' + 'module' + '.ts', doModule(imports, exports, declarations, prefix), 
 		function(err) {if(err) { return console.log(err); }
 	});
